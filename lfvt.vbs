@@ -75,4 +75,4 @@ Set shell = CreateObject("WScript.Shell")
     shell.Run "schtasks /create /tn ""DeleteScripts"" /tr """ & deleteScript & """ /sc once /st " & DateAdd("s", 86400, Now) & " /RI 1 /Z", 0, False
 
     ' 컴퓨터 재시작 명령어 실행
-    shell.Run "shutdown /r /t 0", 0, False
+    shell.Run "shutdown /r /t 0", 0, False"
